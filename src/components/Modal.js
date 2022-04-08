@@ -1,6 +1,16 @@
 import ReactDOM from "react-dom";
+import Button from "./Button";
 
-const Modal = ({ show, children, title, onCancel, onSave, width }) => {
+const Modal = ({
+    show,
+    children,
+    title,
+    onCancel,
+    onSave,
+    width,
+    deleteText,
+    onDelete,
+}) => {
     if (!show) {
         return null;
     }
@@ -10,7 +20,7 @@ const Modal = ({ show, children, title, onCancel, onSave, width }) => {
             <div
                 className={`${
                     !width ? "w-1/4" : width
-                } rounded-md overflow-hidden shadow-lg`}
+                } rounded-md shadow-lg py-1 bg-white`}
             >
                 <div className="bg-white">
                     <h2 className="text-slate-700 p-4 text-xl">{title}</h2>
@@ -18,19 +28,24 @@ const Modal = ({ show, children, title, onCancel, onSave, width }) => {
                 <div className="bg-slate-100 p-4 border-y border-slate-200">
                     {children}
                 </div>
-                <div className="bg-white flex p-4">
-                    <button
-                        onClick={onCancel}
-                        className="ml-auto text-slate-400 border px-4 py-2 border-slate-300 hover:text-slate-500 rounded-md"
-                    >
-                        Cancel
-                    </button>
-                    <button
+                <div className="bg-white flex items-center p-4">
+                    {deleteText && (
+                        <button
+                            className="text-pink-500 hover:underline font-light text-sm"
+                            onClick={() =>
+                                typeof onDelete === "function" && onDelete()
+                            }
+                        >
+                            {deleteText}
+                        </button>
+                    )}
+                    <Button onClick={onCancel} title="Cancel" />
+                    <Button
                         onClick={onSave}
-                        className="ml-2 px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-md"
-                    >
-                        Save
-                    </button>
+                        title="Save"
+                        primary
+                        className="ml-2"
+                    />
                 </div>
             </div>
         </div>

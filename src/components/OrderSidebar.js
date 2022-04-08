@@ -71,7 +71,6 @@ const OrderSidebar = () => {
         }
 
         const dbProducts = cart.map((product) => {
-            console.log(product);
             return {
                 product: product.item,
                 quantity: product.quantity,

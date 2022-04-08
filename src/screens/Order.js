@@ -10,7 +10,6 @@ const Order = () => {
     const [category, setCategory] = useState(null);
 
     const handleCategorySelect = (category) => {
-        console.log(category);
         setCategory(category);
     };
 
