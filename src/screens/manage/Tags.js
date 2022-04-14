@@ -1,4 +1,80 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getTags } from "./services/tagsService";
+import TagSection from "./TagSection";
+import Page from "../Page";
+
+const tagTypes = [
+    { title: "Customer Tag", type: "customer" },
+    { title: "Branch Tag", type: "branch" },
+    { title: "Inventory Item Tag", type: "inventoryItem" },
+    { title: "Order Tag", type: "order" },
+    { title: "Supplier Tag", type: "supplier" },
+    { title: "User Tag", type: "user" },
+    { title: "Product Tag", type: "product" },
+    { title: "Device Tag", type: "device" },
+];
+
+const Tags = () => {
+    const [tags, setTags] = useState([]);
+
+    useEffect(() => {
+        getTags().then((response) => {
+            const { tags } = response.data;
+            setTags(tags);
+        });
+    }, []);
+
+    const handleAdd = (tag) => {
+        setTags([...tags, tag]);
+    };
+
+    const handleUpdate = (tag) => {
+        setTags(
+            tags.map((t) => {
+                if (t.id === tag.id) {
+                    return tag;
+                }
+                return t;
+            })
+        );
+    };
+
+    const handleDelete = (id) => {
+        setTags(tags.filter((t) => t.id !== id));
+    };
+
+    return (
+        <Page title="Reasons" back>
+            <div className="flex flex-col h-full mt-10 items-center">
+                <div className="w-2/4">
+                    {tagTypes.map((tagType) => {
+                        return (
+                            <div
+                                key={`tagType-${tagType.type}`}
+                                className="mb-10"
+                            >
+                                <TagSection
+                                    title={tagType.title}
+                                    type={tagType.type}
+                                    tags={tags.filter(
+                                        (t) => t.type === tagType.type
+                                    )}
+                                    onAdd={handleAdd}
+                                    onUpdate={handleUpdate}
+                                    onDelete={handleDelete}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </Page>
+    );
+};
+
+export default Tags;
+
+/* import { useNavigate } from "react-router-dom";
 import { AiOutlineLeft } from "react-icons/ai";
 import ReasonModal from "./ReasonModal";
 import { useEffect, useState } from "react";
@@ -202,3 +278,4 @@ const Tags = () => {
 };
 
 export default Tags;
+ */

@@ -11,18 +11,27 @@ import { getFirestore, collection, onSnapshot } from "firebase/firestore";
 import Entry from "./screens/Entry";
 import Login from "./screens/Login";
 import Dashboard from "./screens/Dashboard";
-import Manage from "./screens/Manage";
 import ManageMore from "./screens/ManageMore";
+
+import axios from "axios";
 
 import Order from "./screens/Order";
 import Categories from "./screens/Categories";
 import Products from "./screens/Products";
 import Items from "./screens/Items";
 import Settings from "./screens/manage/Settings";
-import axios from "axios";
 import Reasons from "./screens/manage/Reasons";
 import Tags from "./screens/manage/Tags";
-import Taxes from "./screens/manage/Taxes";
+import TaxesAndTaxGroups from "./screens/manage/TaxesAndTaxGroups";
+import PaymentMethods from "./screens/manage/PaymentMethods";
+import Charges from "./screens/manage/Charges";
+import Branches from "./screens/manage/Branches";
+import Users from "./screens/manage/Users";
+import Roles from "./screens/manage/Roles";
+import UserDetail from "./screens/manage/UserDetail";
+import Devices from "./screens/manage/Devices";
+import Register from "./screens/Register";
+import DeviceDetail from "./screens/manage/DeviceDetail";
 
 const initAxios = () => {
     axios.interceptors.request.use(function (config) {
@@ -41,6 +50,7 @@ const Logout = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("expiresIn");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("currency");
     return <Navigate to="/" />;
 };
 
@@ -118,15 +128,31 @@ function App() {
             <Route path="/" element={<Entry />}>
                 <Route path="/logout" element={<Logout />} />
                 <Route path="" element={<Navigate to="/login" />} />
+                <Route path="register" element={<Register />} />
                 <Route path="login" element={<Login />} />
                 <Route path="dashboard" element={<Dashboard />} />
-                <Route path="manage" element={<Manage />}>
-                    <Route path="more" element={<ManageMore />} />
-                    <Route path="settings" element={<Settings />} />
-                    <Route path="reasons" element={<Reasons />} />
-                    <Route path="tags" element={<Tags />} />
-                    <Route path="taxes" element={<Taxes />} />
-                </Route>
+
+                {/* START OF MANAGE MENU */}
+                <Route path="manage/more" element={<ManageMore />} />
+                <Route path="manage/settings" element={<Settings />} />
+                <Route path="manage/reasons" element={<Reasons />} />
+                <Route path="manage/tags" element={<Tags />} />
+                <Route path="manage/taxes" element={<TaxesAndTaxGroups />} />
+                <Route
+                    path="manage/payment-methods"
+                    element={<PaymentMethods />}
+                />
+                <Route path="manage/charges" element={<Charges />} />
+                <Route path="manage/branches" element={<Branches />} />
+                <Route path="manage/devices" element={<Devices />} />
+                <Route
+                    path="manage/devices/:deviceId"
+                    element={<DeviceDetail />}
+                />
+                <Route path="manage/users" element={<Users />} />
+                <Route path="manage/users/:userId" element={<UserDetail />} />
+                <Route path="manage/roles" element={<Roles />} />
+                {/* END OF MANAGE MENU */}
             </Route>
 
             {/* Modify the below routes later on */}

@@ -1,10 +1,12 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { AiOutlineLeft } from "react-icons/ai";
 
 import GeneralSettings from "./GeneralSettings";
 import LoyaltySettings from "./LoyaltySettings";
 import ReceiptSettings from "./ReceiptSettings";
 import CashierAppSettings from "./CashierAppSettings";
+import Page from "../Page";
+import { useEffect, useState } from "react";
+import { getSettings } from "./services/settingsService";
 
 const SettingLink = ({ hash, title }) => {
     const location = useLocation();
@@ -24,22 +26,20 @@ const SettingLink = ({ hash, title }) => {
 
 const Settings = () => {
     const location = useLocation();
-    const navigate = useNavigate();
-    const hasHistory = window.history.length > 0;
+    const [companyData, setCompanyData] = useState(null);
+
+    useEffect(() => {
+        getSettings().then((response) => {
+            const data = response.data;
+            setCompanyData(data);
+        });
+    }, []);
 
     return (
-        <div className="w-full h-full">
-            <div className="bg-white px-10 py-2">
-                {hasHistory && (
-                    <button
-                        className="flex items-center text-slate-600 hover:text-slate-700"
-                        onClick={() => navigate("/manage/more")}
-                    >
-                        <AiOutlineLeft className="mr-1" />
-                        <span className="font-light">Back</span>
-                    </button>
-                )}
-                <h1 className="text-3xl font-light">Settings</h1>
+        <Page
+            back
+            title="Settings"
+            links={
                 <ul className="mt-4 flex">
                     <li>
                         <SettingLink hash="#general" title="General" />
@@ -54,14 +54,25 @@ const Settings = () => {
                         <SettingLink hash="#cashier" title="Cashier App" />
                     </li>
                 </ul>
-            </div>
-            <div className="flex h-full mt-10 justify-center">
-                {location.hash === "#general" && <GeneralSettings />}
-                {location.hash === "#loyalty" && <LoyaltySettings />}
-                {location.hash === "#receipt" && <ReceiptSettings />}
-                {location.hash === "#cashier" && <CashierAppSettings />}
-            </div>
-        </div>
+            }
+        >
+            {companyData && (
+                <div className="mt-10 flex justify-center">
+                    {location.hash === "#general" && (
+                        <GeneralSettings data={companyData} />
+                    )}
+                    {location.hash === "#loyalty" && (
+                        <LoyaltySettings data={companyData} />
+                    )}
+                    {location.hash === "#receipt" && (
+                        <ReceiptSettings data={companyData} />
+                    )}
+                    {location.hash === "#cashier" && (
+                        <CashierAppSettings data={companyData} />
+                    )}
+                </div>
+            )}
+        </Page>
     );
 };
 

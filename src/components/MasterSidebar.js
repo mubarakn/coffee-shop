@@ -1,8 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useMatch } from "react-router-dom";
 import { AiOutlineSetting } from "react-icons/ai";
 import Accordion from "../components/Accordion";
 
+const SidebarLink = ({ link, title }) => {
+    return (
+        <Link
+            to={link}
+            className="text-slate-600 hover:text-cyan-500 hover:underline"
+        >
+            {title}
+        </Link>
+    );
+};
+
 const MasterSidebar = () => {
+    const manageMatch = useMatch("/manage/:settings");
     return (
         <div className="w-72 bg-white border-r border-slate-300">
             {/* <ul className="w-full">
@@ -51,6 +63,7 @@ const MasterSidebar = () => {
 
             {/* Manage */}
             <Accordion
+                expand={manageMatch}
                 header={
                     <div className="flex items-center text-slate-500">
                         <AiOutlineSetting size={24} />
@@ -59,13 +72,20 @@ const MasterSidebar = () => {
                 }
             >
                 <ul className="ml-8 mt-4">
+                    <li className="mb-4">
+                        <SidebarLink link="/manage/users" title="Users" />
+                    </li>
+                    <li className="mb-4">
+                        <SidebarLink link="/manage/roles" title="Roles" />
+                    </li>
+                    <li className="mb-4">
+                        <SidebarLink link="/manage/branches" title="Branches" />
+                    </li>
+                    <li className="mb-4">
+                        <SidebarLink link="/manage/devices" title="Devices" />
+                    </li>
                     <li>
-                        <Link
-                            to="/manage/more"
-                            className="text-slate-600 hover:underline"
-                        >
-                            More...
-                        </Link>
+                        <SidebarLink link="/manage/more" title="More..." />
                     </li>
                 </ul>
             </Accordion>

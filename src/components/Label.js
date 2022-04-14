@@ -1,6 +1,10 @@
-const Label = ({ children }) => {
+const Label = ({ children, className }) => {
     return (
-        <label className="font-light text-slate-600 text-sm">{children}</label>
+        <label
+            className={`block font-light text-slate-600 text-sm ${className}`}
+        >
+            {children}
+        </label>
     );
 };
 

@@ -1,25 +1,59 @@
 import { useState } from "react";
 import Button from "../../components/Button";
+import { updateCashierSettings } from "./services/settingsService";
 
-const CashierAppSettings = () => {
-    const [presetTenderAmounts, setPresetTenderAmounts] = useState("50,100");
-    const [preferredTipsPercentages, setPreferredTipsPercentages] =
-        useState("");
-    const [idleLogoutDuration, setIdleLogoutDuration] = useState(30);
-    const [maximumReturnPeriod, setMaximumReturnPeriod] = useState(60);
-    const [roundingMethod, setRoundingMethod] = useState("");
-    const [roundingLevel, setRoundingLevel] = useState(0.1);
-    const [kitchenSortingMethod, setKitchenSortingMethod] = useState(
-        "basedOnMenuCategoriesSorting"
+const CashierAppSettings = ({ data }) => {
+    const [presetTenderAmounts, setPresetTenderAmounts] = useState(
+        data.presetTenderAmounts || "50,100"
     );
-    const [enableTips, toggleTips] = useState(false);
+    const [preferredTipsPercentages, setPreferredTipsPercentages] = useState(
+        data.preferredTipsPercentages || ""
+    );
+    const [idleLogoutDuration, setIdleLogoutDuration] = useState(
+        data.idleLogoutDuration || 30
+    );
+    const [maximumReturnPeriod, setMaximumReturnPeriod] = useState(
+        data.maximumReturnPeriod || 60
+    );
+    const [roundingMethod, setRoundingMethod] = useState(
+        data.maximumReturnPeriod || ""
+    );
+    const [roundingLevel, setRoundingLevel] = useState(
+        data.roundingLevel || 0.1
+    );
+    const [kitchenSortingMethod, setKitchenSortingMethod] = useState(
+        data.kitchenSortingMethod || "basedOnMenuCategoriesSorting"
+    );
+    const [enableTips, toggleTips] = useState(data.enableTips || false);
     const [discountRequireCustomerInfo, toggleDiscountRequireCustomerInfo] =
-        useState(false);
-    const [voidRequireCustomerInfo, toggleVoidRequireCustomerInfo] =
-        useState(false);
-    const [askForVoidReasons, toggleAskForVoidReasons] = useState(false);
+        useState(data.discountRequireCustomerInfo || false);
+    const [voidRequireCustomerInfo, toggleVoidRequireCustomerInfo] = useState(
+        data.voidRequireCustomerInfo || false
+    );
+    const [askForVoidReason, toggleAskForVoidReason] = useState(
+        data.askForVoidReason || false
+    );
 
-    const handleSaveChanges = () => {};
+    const handleSaveChanges = () => {
+        const data = {
+            presetTenderAmounts,
+            preferredTipsPercentages,
+            idleLogoutDuration,
+            maximumReturnPeriod,
+            roundingMethod,
+            roundingLevel,
+            kitchenSortingMethod,
+            enableTips,
+            discountRequireCustomerInfo,
+            voidRequireCustomerInfo,
+            askForVoidReason,
+        };
+        updateCashierSettings(data).then((response) => {
+            if (response.status === 202) {
+                alert("Changes Saved!");
+            }
+        });
+    };
 
     return (
         <div className="w-2/4">
@@ -116,10 +150,8 @@ const CashierAppSettings = () => {
                         }
                         className="block mt-1 border border-slate-200 w-full rounded-lg py-1 px-2 font-light"
                     >
-                        <option value="asAddedInTheCashier">
-                            As added in the cashier
-                        </option>
-                        <option value="basedOnMenuCategoriesSorting">
+                        <option value="o">As added in the cashier</option>
+                        <option value="1">
                             Based on menu categories sorting
                         </option>
                     </select>
@@ -161,16 +193,16 @@ const CashierAppSettings = () => {
                                 )
                             }
                         />
-                        Discount Require Customer Info
+                        Void Require Customer Info
                     </label>
 
                     <label className="flex items-center text-slate-600 font-light mt-2">
                         <input
                             type="checkbox"
                             className="mr-2 rounded p-1"
-                            checked={askForVoidReasons}
+                            checked={askForVoidReason}
                             onChange={() =>
-                                toggleAskForVoidReasons(!askForVoidReasons)
+                                toggleAskForVoidReason(!askForVoidReason)
                             }
                         />
                         Ask for Void Reasons

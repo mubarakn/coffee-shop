@@ -1,8 +1,16 @@
 import axios from "axios";
 const baseUrl = "/tags/";
 
-export const getTags = () => {
-    return axios.get(baseUrl);
+export const getTags = (type) => {
+    if (!type) {
+        return axios.get(baseUrl);
+    }
+
+    return axios.get(`${baseUrl}${type}`);
+};
+
+export const getTag = (id) => {
+    return axios.get(`${baseUrl}${id}`);
 };
 
 export const createTag = (type, tag) => {

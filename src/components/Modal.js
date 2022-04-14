@@ -16,10 +16,10 @@ const Modal = ({
     }
 
     const view = (
-        <div className="absolute top-0 left-0 w-screen h-screen flex items-center justify-center bg-slate-500 bg-opacity-50">
+        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-slate-500 bg-opacity-50">
             <div
                 className={`${
-                    !width ? "w-1/4" : width
+                    !width ? "max-w-4xl w-1/4" : width
                 } rounded-md shadow-lg py-1 bg-white`}
             >
                 <div className="bg-white">
@@ -39,13 +39,15 @@ const Modal = ({
                             {deleteText}
                         </button>
                     )}
-                    <Button onClick={onCancel} title="Cancel" />
-                    <Button
-                        onClick={onSave}
-                        title="Save"
-                        primary
-                        className="ml-2"
-                    />
+                    <div className="ml-auto flex">
+                        <Button onClick={onCancel} title="Cancel" />
+                        <Button
+                            onClick={onSave}
+                            title="Save"
+                            primary
+                            className="ml-2"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

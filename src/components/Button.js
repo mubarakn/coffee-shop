@@ -1,8 +1,9 @@
-const Button = ({ title, onClick, primary, className, disabled }) => {
+const Button = ({ type, title, onClick, primary, className, disabled }) => {
     return (
         <button
+            type={type}
             disabled={disabled}
-            className={`ml-auto px-4 py-2 rounded hover:shadow transition flex items-center justify-center
+            className={`px-4 py-2 rounded-lg hover:shadow transition flex items-center justify-center
             ${className || ""}
             ${
                 primary

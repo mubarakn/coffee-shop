@@ -5,6 +5,10 @@ const getReasons = () => {
     return axios.get(baseUrl);
 };
 
+const getReason = (id) => {
+    return axios.get(`${baseUrl}${id}`);
+};
+
 const createReason = (type, reason) => {
     return axios.post(baseUrl, { type, reason });
 };
@@ -17,4 +21,4 @@ const deleteReason = (id) => {
     return axios.delete(`${baseUrl}/${id}`);
 };
 
-export { getReasons, createReason, updateReason, deleteReason };
+export { getReasons, getReason, createReason, updateReason, deleteReason };

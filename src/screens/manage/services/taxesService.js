@@ -6,6 +6,10 @@ export const getTaxes = () => {
     return axios.get(baseUrl);
 };
 
+export const getTax = (id) => {
+    return axios.get(`${baseUrl}${id}`);
+};
+
 export const createTax = (name, rate) => {
     return axios.post(baseUrl, { name, rate });
 };
@@ -20,6 +24,10 @@ export const deleteTax = (id) => {
 
 export const getTaxGroups = () => {
     return axios.get(groupBaseUrl);
+};
+
+export const getTaxGroup = (id) => {
+    return axios.get(`${groupBaseUrl}${id}`);
 };
 
 export const createTaxGroup = (name, taxes) => {

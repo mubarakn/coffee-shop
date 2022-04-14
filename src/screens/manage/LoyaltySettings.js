@@ -1,19 +1,48 @@
 import { useState } from "react";
 import Button from "../../components/Button";
+import { updateLoyaltySettings } from "./services/settingsService";
 
-const LoyaltySettings = () => {
-    const [enableLoyalty, toggleLoyalty] = useState(false);
-    const [loyaltyMethod, setLoyaltyMethod] = useState("Points");
-    const [minimumOrderPrice, setMinimumOrderPrice] = useState(1);
-    const [earningDelay, setEarningDelay] = useState(60);
-    const [rewardType, setRewardType] = useState("discountPercentage");
-    const [rewardValue, setRewardValue] = useState(10);
-    const [maximumDiscountAmount, setMaximumDiscountAmount] = useState(0);
-    const [requiredRewards, setRequiredRewards] = useState(0);
-    const [sendNotificationBySMS, toggleSendNotificationBySMS] =
-        useState(false);
+const LoyaltySettings = ({ data }) => {
+    const [enableLoyalty, toggleLoyalty] = useState(data.enableLoyalty);
+    const [loyaltyMethod, setLoyaltyMethod] = useState(
+        data.loyaltyMethod || "Points"
+    );
+    const [minimumOrderPrice, setMinimumOrderPrice] = useState(
+        data.minimumOrderPrice || 1
+    );
+    const [earningDelay, setEarningDelay] = useState(data.earningDelay || 60);
+    const [rewardType, setRewardType] = useState(
+        data.rewardType || "discountPercentage"
+    ); //discountPercentage, discountAmount
+    const [rewardValue, setRewardValue] = useState(data.rewardValue || 10);
+    const [maximumDiscountAmount, setMaximumDiscountAmount] = useState(
+        data.maximumDiscountAmount || 0
+    );
+    const [requiredRewards, setRequiredRewards] = useState(
+        data.requiredRewardPoints || 0
+    );
+    const [sendNotificationBySMS, toggleSendNotificationBySMS] = useState(
+        data.sendNotificationBySMS || false
+    );
 
-    const handleSaveChanges = () => {};
+    const handleSaveChanges = () => {
+        const data = {
+            enableLoyalty,
+            loyaltyMethod,
+            minimumOrderPrice,
+            earningDelay,
+            rewardType,
+            rewardValue,
+            maximumDiscountAmount,
+            requiredRewards,
+            sendNotificationBySMS,
+        };
+        updateLoyaltySettings(data).then((response) => {
+            if (response.status === 202) {
+                alert("Changes Saved!");
+            }
+        });
+    };
 
     return (
         <div className="w-2/4">

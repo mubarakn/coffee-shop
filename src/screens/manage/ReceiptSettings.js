@@ -1,18 +1,48 @@
 import { useState } from "react";
 import Button from "../../components/Button";
+import { updateReceiptSettings } from "./services/settingsService";
 
-const ReceiptSettings = () => {
-    const [printLanguage, setPrintLanguage] = useState("Main");
-    const [printMainLanguage, setPrintMainLanguage] = useState("English");
-    const [printLocalizedLanguage, setPrintLocalizedLanaguage] = useState("");
-    const [receiptHeader, setReceiptHeader] = useState("");
-    const [receiptFooter, setReceiptFooter] = useState("");
-    const [invoiceTitle, setInvoiceTitle] = useState("Simplified Tax Invoice");
-    const [showOrderNo, toggleOrderNo] = useState(true);
-    const [showSubtotal, toggleSubtotal] = useState(false);
-    const [showRounding, toggleRounding] = useState(true);
+const ReceiptSettings = ({ data }) => {
+    const [printLanguage, setPrintLanguage] = useState(
+        data.printLanguage || "Main"
+    );
+    const [printMainLanguage, setPrintMainLanguage] = useState(
+        data.mainLanguage || "English"
+    );
+    const [printLocalizedLanguage, setPrintLocalizedLanaguage] = useState(
+        data.localizedLanguage || ""
+    );
+    const [receiptHeader, setReceiptHeader] = useState(
+        data.receiptHeader || ""
+    );
+    const [receiptFooter, setReceiptFooter] = useState(
+        data.receiptFooter || ""
+    );
+    const [invoiceTitle, setInvoiceTitle] = useState(
+        data.invoiceTitle || "Simplified Tax Invoice"
+    );
+    const [showOrderNo, toggleOrderNo] = useState(data.showOrderNo || true);
+    const [showSubtotal, toggleSubtotal] = useState(data.showSubtotal || false);
+    const [showRounding, toggleRounding] = useState(data.showRounding || true);
 
-    const handleSaveChanges = () => {};
+    const handleSaveChanges = () => {
+        const data = {
+            printLanguage,
+            printMainLanguage,
+            printLocalizedLanguage,
+            receiptHeader,
+            receiptFooter,
+            invoiceTitle,
+            showOrderNo,
+            showSubtotal,
+            showRounding,
+        };
+        updateReceiptSettings(data).then((response) => {
+            if (response.status === 202) {
+                alert("Changes Saved!");
+            }
+        });
+    };
 
     return (
         <div className="w-2/4">

@@ -2,43 +2,44 @@ import { useEffect, useRef, useState } from "react";
 import Label from "../../components/Label";
 import Modal from "../../components/Modal";
 import {
-    createReason,
-    updateReason,
-    deleteReason,
-    getReason,
-} from "./services/reasonsService";
+    createTag,
+    updateTag,
+    deleteTag,
+    getTag,
+} from "./services/tagsService";
 
-const ReasonModal = ({ id, type, title, show, onClose, onSave, onDelete }) => {
-    const reasonRef = useRef(null);
-    const [reason, setReason] = useState("");
+const TagModal = ({ id, type, title, show, onClose, onSave, onDelete }) => {
+    const tagRef = useRef(null);
+    const [tag, setTag] = useState("");
 
     useEffect(() => {
         if (show) {
-            reasonRef.current.focus();
-            !id && setReason("");
+            tagRef.current.focus();
+            !id && setTag("");
         }
     }, [show]);
 
     useEffect(() => {
+        console.log("id", id);
         if (id) {
-            getReason(id).then((response) => {
-                setReason(response.data.reason);
+            getTag(id).then((response) => {
+                setTag(response.data.tag);
             });
         }
     }, [id]);
 
     const handleSave = async () => {
         if (id) {
-            updateReason(id, reason).then((response) => {
+            updateTag(id, tag).then((response) => {
                 if (response.status === 202 && typeof onSave === "function") {
-                    onSave({ id, type, reason });
+                    onSave({ id, type, tag });
                 }
             });
         } else {
-            createReason(type, reason).then((response) => {
-                const { id, reason } = response.data;
+            createTag(type, tag).then((response) => {
+                const { id, tag } = response.data;
                 if (response.status === 201 && typeof onSave === "function") {
-                    onSave({ id, type, reason });
+                    onSave({ id, type, tag });
                 }
             });
         }
@@ -51,8 +52,8 @@ const ReasonModal = ({ id, type, title, show, onClose, onSave, onDelete }) => {
     };
 
     const handleDelete = () => {
-        if (window.confirm("Are you sure, you want to delte this reason?")) {
-            deleteReason(id).then((response) => {
+        if (window.confirm("Are you sure, you want to delte this tag?")) {
+            deleteTag(id).then((response) => {
                 if (response.status === 204 && typeof onDelete === "function") {
                     onDelete();
                 }
@@ -67,20 +68,20 @@ const ReasonModal = ({ id, type, title, show, onClose, onSave, onDelete }) => {
             onSave={handleSave}
             onCancel={handleCancel}
             onDelete={handleDelete}
-            deleteText={id && "Delete Reason"}
+            deleteText={id && "Delete Tag"}
         >
             <div>
-                <Label>Reason</Label>
+                <Label>Tag</Label>
                 <input
-                    ref={reasonRef}
+                    ref={tagRef}
                     type="text"
                     className="mt-1 w-full block bg-white border border-slate-200 p-1 rounded"
-                    value={reason}
-                    onChange={(e) => setReason(e.target.value)}
+                    value={tag}
+                    onChange={(e) => setTag(e.target.value)}
                 />
             </div>
         </Modal>
     );
 };
 
-export default ReasonModal;
+export default TagModal;

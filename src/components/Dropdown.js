@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const DropdownItem = ({ selected, displayText, onClick }) => {
     return (
         <div
-            className={`p-1 bg-white hover:bg-slate-50 rounded cursor-pointer text-slate-600
+            className={`p-1 bg-white hover:bg-slate-50 rounded cursor-pointer text-slate-600 text-sm border-b border-slate-50 py-2
             ${selected && "bg-slate-50"}`}
             onClick={() => typeof onClick === "function" && onClick()}
         >
@@ -12,23 +12,48 @@ const DropdownItem = ({ selected, displayText, onClick }) => {
     );
 };
 
-const Dropdown = ({ data, onOptionSelected, multiple, selectedValue }) => {
-    const dataMap = data.reduce((acc, item) => {
-        if (!acc[item.value]) {
-            acc[item.value] = item.label;
-        }
-        return acc;
-    }, {});
+const Dropdown = ({
+    data,
+    onOptionSelected,
+    multiple,
+    selectedValue,
+    onOptionRemoved,
+}) => {
+    const dropdownRef = useRef(null);
+    const listRef = useRef(null);
     const queryRef = useRef(null);
     const [query, setQuery] = useState("");
     const [showList, toggleList] = useState(false);
-    const [values, setValues] = useState(
-        multiple
-            ? Array.isArray(selectedValue)
-                ? selectedValue
-                : []
-            : selectedValue
-    );
+    const [dataMap, setDataMap] = useState({});
+    const [values, setValues] = useState(null);
+
+    useEffect(() => {
+        document.body.style.overflowY = "hidden";
+
+        return () => (document.body.style.overflowY = "initial");
+    }, []);
+
+    useEffect(() => {
+        if (data.length) {
+            const dataMap = data.reduce((acc, item) => {
+                if (!acc[item.value]) {
+                    acc[item.value] = item.label;
+                }
+                return acc;
+            }, {});
+            setDataMap(dataMap);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        setValues(
+            multiple
+                ? Array.isArray(selectedValue)
+                    ? selectedValue
+                    : []
+                : selectedValue
+        );
+    }, [selectedValue, multiple]);
 
     const listener = useCallback(
         (e) => {
@@ -53,7 +78,7 @@ const Dropdown = ({ data, onOptionSelected, multiple, selectedValue }) => {
         }
     }, [showList]);
 
-    const handleItemClick = (item, index) => {
+    const handleItemClick = (item) => {
         if (!item && !multiple) {
             setValues(null);
             return;
@@ -76,6 +101,9 @@ const Dropdown = ({ data, onOptionSelected, multiple, selectedValue }) => {
     const handleRemove = (value) => {
         if (multiple) {
             setValues(values.filter((val) => val !== value));
+            if (typeof onOptionRemoved === "function") {
+                onOptionRemoved(value);
+            }
         }
     };
 
@@ -104,8 +132,17 @@ const Dropdown = ({ data, onOptionSelected, multiple, selectedValue }) => {
         labels = dataMap[values];
     }
 
+    useEffect(() => {
+        if (showList) {
+            const rect = dropdownRef.current.getBoundingClientRect();
+            listRef.current.style.width = `${rect.width}px`;
+            listRef.current.style.top = `${rect.top + 50}px`;
+            listRef.current.style.left = `${rect.left}px`;
+        }
+    }, [showList]);
+
     return (
-        <div className="isolate relative w-full">
+        <div className="w-full" ref={dropdownRef}>
             <div
                 className="border border-slate-200 bg-white rounded p-2 text-slate-600 flex items-center flex-wrap"
                 onClick={() => toggleList(true)}
@@ -114,7 +151,8 @@ const Dropdown = ({ data, onOptionSelected, multiple, selectedValue }) => {
             </div>
             {showList && (
                 <div
-                    className="absolute left-0 bg-white p-2 shadow rounded w-full"
+                    ref={listRef}
+                    className="fixed bg-white p-2 shadow rounded"
                     style={{ top: "calc(100% + 4px)" }}
                 >
                     <input
@@ -133,7 +171,7 @@ const Dropdown = ({ data, onOptionSelected, multiple, selectedValue }) => {
                         <DropdownItem
                             displayText="None"
                             onClick={() => {
-                                handleItemClick(null, -1);
+                                handleItemClick(null);
                             }}
                         />
                         {data
@@ -152,7 +190,7 @@ const Dropdown = ({ data, onOptionSelected, multiple, selectedValue }) => {
                                     key={`dropdown-${d.value}`}
                                     displayText={d.label}
                                     selected={idx === 0 && query}
-                                    onClick={() => handleItemClick(d, idx)}
+                                    onClick={() => handleItemClick(d)}
                                 />
                             ))}
                     </div>
