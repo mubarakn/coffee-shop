@@ -1,7 +1,7 @@
 const DataCard = ({ data }) => {
     const output = data.map((d, i) => {
         return (
-            <div className="w-full px-6 mb-5 lg:w-1/2">
+            <div key={`data-point-${i}`} className="w-full px-6 mb-5 lg:w-1/2">
                 <div className=" border-b border-slate-300">
                     <div className="text-slate-600 mb-1 font-light">
                         {d.label}

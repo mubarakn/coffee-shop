@@ -60,7 +60,6 @@ const Charges = () => {
     };
 
     const handleItemClick = (item) => {
-        console.log("item", item);
         setId(item.id);
         toggleModal(true);
     };

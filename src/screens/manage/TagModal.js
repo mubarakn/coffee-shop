@@ -20,7 +20,6 @@ const TagModal = ({ id, type, title, show, onClose, onSave, onDelete }) => {
     }, [show]);
 
     useEffect(() => {
-        console.log("id", id);
         if (id) {
             getTag(id).then((response) => {
                 setTag(response.data.tag);

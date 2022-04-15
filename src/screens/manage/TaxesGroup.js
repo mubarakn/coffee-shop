@@ -34,7 +34,6 @@ const TaxesGroup = () => {
     useEffect(() => {
         getTaxGroups().then((response) => {
             const { taxGroups } = response.data;
-            console.log(taxGroups);
             setTaxGroups(taxGroups);
         });
     }, []);

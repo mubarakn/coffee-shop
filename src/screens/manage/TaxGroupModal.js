@@ -24,7 +24,6 @@ const TaxGroupModal = ({ id, show, onSave, onCancel, onDelete }) => {
 
             getTaxes().then((response) => {
                 setTaxes(response.data.taxes);
-                console.log("taxes", response.data);
             });
         } else {
             setName("");

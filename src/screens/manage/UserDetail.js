@@ -575,10 +575,8 @@ const ChangePasswordModal = ({ id, show, onSave, onCancel }) => {
     }, []);
 
     const handleSave = () => {
-        console.log("hi");
         if (password.length && password === confirmPassword) {
             changePassword(id, password).then((response) => {
-                console.log(response);
                 if (response.status === 202) {
                     typeof onSave === "function" && onSave();
                 }

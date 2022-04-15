@@ -43,7 +43,6 @@ const BranchModal = ({ show, id, onSave, onCancel, onDelete }) => {
     useEffect(() => {
         if (id) {
             getUser(id).then((response) => {
-                console.log(response);
                 const user = response.data;
                 setName(user.name);
                 setLanguage(user.language);

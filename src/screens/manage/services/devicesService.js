@@ -43,6 +43,10 @@ const getCode = (type) => {
     return axios.get(`${baseUrl}code/${type}`);
 };
 
+const updateTags = (id, tags) => {
+    return axios.put(`${baseUrl}${id}/tags`, { tags });
+};
+
 export {
     getDevices,
     getDevice,
@@ -50,4 +54,5 @@ export {
     updateDevice,
     deleteDevice,
     getCode,
+    updateTags,
 };

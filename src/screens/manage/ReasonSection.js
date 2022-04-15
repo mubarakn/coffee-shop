@@ -32,7 +32,6 @@ const ReasonSection = ({ title, type, reasons, onAdd, onUpdate, onDelete }) => {
     };
 
     const handleReasonClick = (reason) => {
-        console.log(reason);
         setId(reason.id);
         toggleModal(true);
     };

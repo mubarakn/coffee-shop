@@ -21,7 +21,6 @@ const RegistrationBox = () => {
 
     useEffect(() => {
         axios.get("/countries").then((response) => {
-            console.log(response);
             setCountries(
                 response.data.map((c) => ({ id: c.id, name: c.name }))
             );

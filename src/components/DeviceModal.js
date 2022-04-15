@@ -41,7 +41,7 @@ const DeviceModal = ({ show, id, onSave, onCancel, onDelete }) => {
     useEffect(() => {
         if (id) {
             getDevice(id).then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
             });
         }
     }, [id]);
@@ -130,7 +130,6 @@ const DeviceModal = ({ show, id, onSave, onCancel, onDelete }) => {
                 menuGroup,
                 receivesOnlineOrders
             ).then((response) => {
-                console.log(response);
                 if (response.status === 202) {
                     triggerSave();
                 }

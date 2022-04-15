@@ -141,7 +141,6 @@ const RoleModal = ({ show, id, onDelete, onCancel, onSave }) => {
     useEffect(() => {
         if (id) {
             getRole(id).then((response) => {
-                console.log(response);
                 const role = response.data;
                 setName(role.name);
                 setReadOrders(role.readOrders);
