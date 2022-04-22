@@ -78,16 +78,6 @@ const DeviceModal = ({ show, id, onSave, onCancel, onDelete }) => {
         }
     }, [show]);
 
-    const handleDelete = () => {
-        deleteDevice(id).then((response) => {
-            if (response.status === 204) {
-                if (typeof onDelete === "function") {
-                    onDelete();
-                }
-            }
-        });
-    };
-
     useEffect(() => {
         if (id) {
             getDevice(id).then((response) => {
@@ -137,7 +127,11 @@ const DeviceModal = ({ show, id, onSave, onCancel, onDelete }) => {
         } else {
             createDevice(type, code, name, branch).then((response) => {
                 if (response.status === 201) {
-                    triggerSave();
+                    onSave({
+                        ...response.data,
+                        menuGroup,
+                        receivesOnlineOrders,
+                    });
                 }
             });
         }
@@ -156,7 +150,6 @@ const DeviceModal = ({ show, id, onSave, onCancel, onDelete }) => {
             title={id ? "Edit Device" : "New Device"}
             onSave={handleSave}
             onCancel={handleCancel}
-            onDelete={handleDelete}
             deleteText={id && "Delete Device"}
         >
             {!id && (

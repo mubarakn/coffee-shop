@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import Modal from "./Modal";
+import Modal from "../components/Modal";
 import {
     getCategory,
     deleteCategory,
     createCategory,
     updateCategory,
-} from "../screens/inventory/categoryService";
+} from "./menuCategoryService";
 
 const Category = ({ show, id, onSave, onClose, onDelete }) => {
     const nameRef = useRef(null);

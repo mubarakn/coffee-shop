@@ -10,6 +10,7 @@ const Modal = ({
     width,
     deleteText,
     onDelete,
+    secondaryAction,
 }) => {
     if (!show) {
         return null;
@@ -18,9 +19,7 @@ const Modal = ({
     const view = (
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-slate-500 bg-opacity-50">
             <div
-                className={`${
-                    !width ? "max-w-4xl w-1/4" : width
-                } rounded-md shadow-lg py-1 bg-white`}
+                className={`max-w-4xl rounded-md shadow-lg py-1 bg-white mx-auto`}
             >
                 <div className="bg-white">
                     <h2 className="text-slate-700 p-4 text-xl">{title}</h2>
@@ -29,12 +28,11 @@ const Modal = ({
                     {children}
                 </div>
                 <div className="bg-white flex items-center p-4">
-                    {deleteText && (
+                    {secondaryAction ? secondaryAction : null}
+                    {deleteText && typeof onDelete === "function" && (
                         <button
                             className="text-pink-500 hover:underline font-light text-sm"
-                            onClick={() =>
-                                typeof onDelete === "function" && onDelete()
-                            }
+                            onClick={() => onDelete()}
                         >
                             {deleteText}
                         </button>

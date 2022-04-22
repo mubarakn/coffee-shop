@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { getItems } from "../screens/inventory/itemService";
 import Modal from "./Modal";
 
 const AssignIngredient = ({ show, ingredients, onAdd, onClose }) => {
-    const items = useSelector((state) => state.items);
+    const [items, setItems] = useState([]);
     const [ingredient, setIngredient] = useState("");
+
+    useEffect(() => {
+        if (show) {
+            getItems().then((response) => {
+                setItems(response.data.items);
+            });
+        }
+    }, [show]);
 
     if (!show) {
         return null;

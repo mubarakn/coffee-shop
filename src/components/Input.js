@@ -1,7 +1,10 @@
 import { forwardRef } from "react";
 
 const Input = forwardRef(
-    ({ required, type, className, value, onChange, readOnly }, ref) => {
+    (
+        { required, type, className, value, onChange, readOnly, placeholder },
+        ref
+    ) => {
         return required ? (
             <input
                 ref={ref}
@@ -13,6 +16,7 @@ const Input = forwardRef(
                     typeof onChange === "function" && onChange(e.target.value)
                 }
                 readOnly={readOnly}
+                placeholder={placeholder}
             />
         ) : (
             <input
@@ -24,6 +28,7 @@ const Input = forwardRef(
                     typeof onChange === "function" && onChange(e.target.value)
                 }
                 readOnly={readOnly}
+                placeholder={placeholder}
             />
         );
     }

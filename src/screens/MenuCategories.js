@@ -1,10 +1,10 @@
 import Master from "./Master";
 import CategoryList from "../components/CategoryList";
 import { useEffect, useState } from "react";
-import Category from "../components/Category";
+import Category from "./MenuCategoryModal";
 import Button from "../components/Button";
 import Page from "./Page";
-import { getCategories } from "./inventory/categoryService";
+import { getCategories } from "./menuCategoryService";
 
 //Category Structure
 // { id: i, name: `Category ${i}` }

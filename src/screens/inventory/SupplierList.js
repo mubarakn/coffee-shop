@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ItemList = ({ items }) => {
+const SupplierList = ({ suppliers }) => {
     const navigate = useNavigate();
 
     const handleItemClick = (id) => {
@@ -17,13 +16,15 @@ const ItemList = ({ items }) => {
                             <th className="w-10">
                                 <input type="checkbox" />
                             </th>
+                            <th>Code</th>
                             <th>Name</th>
-                            <th>Stock Unit</th>
-                            <th>Ingredient Unit</th>
+                            <th>Contact Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {items.map((item) => {
+                        {suppliers.map((item) => {
                             return (
                                 <tr
                                     key={`item-${item.id}`}
@@ -33,12 +34,16 @@ const ItemList = ({ items }) => {
                                     <td className="w-10 text-center p-2">
                                         <input type="checkbox" />
                                     </td>
+                                    <td className="text-center">{item.code}</td>
                                     <td className="text-center">{item.name}</td>
                                     <td className="text-center">
-                                        {item.stockUnit}
+                                        {item.contactName}
                                     </td>
                                     <td className="text-center">
-                                        {item.ingredientUnit}
+                                        {item.phone}
+                                    </td>
+                                    <td className="text-center">
+                                        {item.email}
                                     </td>
                                 </tr>
                             );
@@ -50,4 +55,4 @@ const ItemList = ({ items }) => {
     );
 };
 
-export default ItemList;
+export default SupplierList;

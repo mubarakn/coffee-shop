@@ -35,8 +35,7 @@ const Devices = () => {
     };
 
     const handleItemClick = (device) => {
-        //setId(device.id);
-        //toggleModal(true);
+        console.log(device);
         navigate(`${device.id}`, { replace: false });
     };
 
@@ -46,6 +45,7 @@ const Devices = () => {
     };
 
     const handleDeviceSave = (device) => {
+        console.log("new device", device);
         if (id) {
             setDevices(
                 devices.map((d) => {

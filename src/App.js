@@ -6,6 +6,7 @@ import { addItem, editItem } from "./redux/itemSlice";
 import { Route, Routes, Navigate } from "react-router-dom";
 import app from "./firebaseApp";
 import { getFirestore, collection, onSnapshot } from "firebase/firestore";
+import Bugsnag from "@bugsnag/js";
 
 //screens
 import Entry from "./screens/Entry";
@@ -32,6 +33,10 @@ import UserDetail from "./screens/manage/UserDetail";
 import Devices from "./screens/manage/Devices";
 import Register from "./screens/Register";
 import DeviceDetail from "./screens/manage/DeviceDetail";
+import ItemDetail from "./screens/inventory/ItemDetail";
+import Suppliers from "./screens/inventory/Suppliers";
+import SupplierDetail from "./screens/inventory/SupplierDetail";
+import MenuCategories from "./screens/MenuCategories";
 
 const initAxios = () => {
     axios.interceptors.request.use(function (config) {
@@ -132,6 +137,26 @@ function App() {
                 <Route path="login" element={<Login />} />
                 <Route path="dashboard" element={<Dashboard />} />
 
+                {/* START OF INVENTORY MENU */}
+                <Route path="inventory">
+                    <Route path="categories" element={<Categories />} />
+                    <Route path="items" element={<Items />} />
+                    <Route path="items/:itemId" element={<ItemDetail />} />
+                    <Route path="suppliers" element={<Suppliers />} />
+                    <Route
+                        path="suppliers/:supplierId"
+                        element={<SupplierDetail />}
+                    />
+                </Route>
+                {/* END OF INVENTORY MENU */}
+
+                {/* START OF MENU MENU */}
+                <Route path="menu">
+                    <Route path="categories" element={<MenuCategories />} />
+                    <Route path="products" element={<Products />} />
+                </Route>
+                {/* END OF MENU MENU */}
+
                 {/* START OF MANAGE MENU */}
                 <Route path="manage/more" element={<ManageMore />} />
                 <Route path="manage/settings" element={<Settings />} />
@@ -158,7 +183,6 @@ function App() {
             {/* Modify the below routes later on */}
             <Route path="/order" element={<Order />} />
             <Route path="/categories" element={<Categories />} />
-            <Route path="/products" element={<Products />} />
 
             <Route path="/items" element={<Items />} />
         </Routes>

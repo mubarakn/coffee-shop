@@ -4,15 +4,15 @@ import AssignIngredient from "./AssignIngredient";
 import Modal from "./Modal";
 import app from "../firebaseApp";
 import { getFirestore, doc, collection, setDoc } from "firebase/firestore";
+import { getItems } from "../screens/inventory/itemService";
+import { getCategories } from "../screens/menuCategoryService";
 
 const db = getFirestore(app);
 const Product = ({ show, onClose }) => {
     const nameRef = useRef(null);
-    const [categories, items] = useSelector((state) => [
-        state.categories,
-        state.items,
-    ]);
 
+    const [categories, setCategories] = useState([]);
+    const [items, setItems] = useState([]);
     const [showAssignIngredient, toggleAssignIngredient] = useState(false);
     const [category, setCategory] = useState("");
     const [name, setName] = useState("");
@@ -21,6 +21,17 @@ const Product = ({ show, onClose }) => {
     const [ingredients, setIngredients] = useState([]);
     const [ingredientQuantities, setIngredientQuantities] = useState([]);
     const [ingredientsMap, setIngredientsMap] = useState({});
+
+    useEffect(() => {
+        getCategories().then((response) => {
+            setCategories(response.data.categories);
+        });
+
+        getItems().then((response) => {
+            setItems(response.data.items);
+            console.log(response.data);
+        });
+    }, []);
 
     useEffect(() => {
         setIngredientsMap(
@@ -74,7 +85,6 @@ const Product = ({ show, onClose }) => {
     };
 
     const handleAdd = (ingredient) => {
-        //TODO remove the parseInt if you are gonna use mongodb or firebase because id won't be integer
         setIngredients([...ingredients, ingredient]);
         toggleAssignIngredient(false);
     };

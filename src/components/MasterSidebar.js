@@ -1,4 +1,4 @@
-import { Link, useMatch } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSetting } from "react-icons/ai";
 import Accordion from "../components/Accordion";
 
@@ -14,7 +14,16 @@ const SidebarLink = ({ link, title }) => {
 };
 
 const MasterSidebar = () => {
-    const manageMatch = useMatch("/manage/:settings");
+    const location = useLocation();
+    const pathnameParts = location.pathname.slice(1).split("/");
+    const manageMatch =
+        pathnameParts.length > 1 && pathnameParts[0] === "manage";
+
+    const inventoryMatch =
+        pathnameParts.length > 1 && pathnameParts[0] === "inventory";
+
+    const menuMatch = pathnameParts.length > 1 && pathnameParts[0] === "menu";
+
     return (
         <div className="w-72 bg-white border-r border-slate-300">
             {/* <ul className="w-full">
@@ -60,6 +69,61 @@ const MasterSidebar = () => {
                     </Link>
                 </li>
             </ul> */}
+
+            {/* Inventory */}
+            <Accordion
+                expand={inventoryMatch}
+                header={
+                    <div className="flex items-center text-slate-500">
+                        <AiOutlineSetting size={24} />
+                        <span className="ml-2">Inventory</span>
+                    </div>
+                }
+            >
+                <ul className="ml-8 mt-4">
+                    <li className="mb-4">
+                        <SidebarLink
+                            link="/inventory/categories"
+                            title="Categories"
+                        />
+                    </li>
+                    <li className="mb-4">
+                        <SidebarLink link="/inventory/items" title="Items" />
+                    </li>
+                    <li className="mb-4">
+                        <SidebarLink
+                            link="/inventory/suppliers"
+                            title="Suppliers"
+                        />
+                    </li>
+                </ul>
+            </Accordion>
+
+            {/* Menu */}
+            <Accordion
+                expand={menuMatch}
+                header={
+                    <div className="flex items-center text-slate-500">
+                        <AiOutlineSetting size={24} />
+                        <span className="ml-2">Menu</span>
+                    </div>
+                }
+            >
+                <ul className="ml-8 mt-4">
+                    <li className="mb-4">
+                        <SidebarLink
+                            link="/menu/categories"
+                            title="Categories"
+                        />
+                    </li>
+                    <li className="mb-4">
+                        <SidebarLink link="/menu/products" title="Products" />
+                    </li>
+                    <li className="mb-4">
+                        <SidebarLink link="/menu/combos" title="Combos" />
+                    </li>
+                </ul>
+            </Accordion>
 
             {/* Manage */}
             <Accordion
